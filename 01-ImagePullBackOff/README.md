@@ -83,3 +83,4 @@ TO AWS ECR : ``` kubectl create secret docker-registry  \
 
 ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/771efc8b-9397-4785-a3d7-5c23dfc057bf)
 
+dckr_pat_vmiceT3cyuCZOfWVbuB9x1aU-BQ
