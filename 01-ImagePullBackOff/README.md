@@ -83,3 +83,11 @@ TO AWS ECR : ``` kubectl create secret docker-registry  \
 
 ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/771efc8b-9397-4785-a3d7-5c23dfc057bf)
 
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/1af7f9ad-8924-4d53-9931-6f15bc5538b4)
+- With secret
+
+```
+
+For ECR
+--
+REF LINK : https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-pull-ecr-image.html
