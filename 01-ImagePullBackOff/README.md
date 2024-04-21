@@ -20,6 +20,7 @@ REF : ``` https://kubernetes.io/docs/reference/kubectl/quick-reference/ ```
 Pulling a container image
 --
 IMAGE PULL
+1ST SENATIO - IMAGE INVALID, IMAGE DON'T EXISTS
 --
 ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/49c34360-ef0d-4994-a35a-12798cada965)
 
@@ -55,4 +56,30 @@ ERROR
 - NEXT IMAGEPULL BACKOFF
 - ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/e70fe044-f020-48a7-8ef6-6e0b11413af6)
 
-2ND 
+2ND SENARIO - SECRET ISSUE - PRIVATE REGISTRY 
+--
+
+![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/cdd36ab6-0d35-4766-975a-e7e367458f32)
+
+![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/cd216393-6370-44e5-a201-b7f59cc1683b)
+
+REF : https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/53dc77b8-25ff-4758-8aba-391aa68aee21)
+
+TO pull private image 
+--
+TO DOCKERHUB : ``` kubectl create secret docker-registry demo --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>          ```
+TO AWS ECR : ``` kubectl create secret docker-registry  \
+  --docker-server=${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com \
+  --docker-username=AWS \
+  --docker-password=$(aws ecr get-login-password) \
+  --namespace=default
+```
+
+- We need to store private repo docker credentials in kubernetes secrets
+- Above command will create a secret
+- To get seccrets we need to use ``` kubectl get secrets ```
+
+![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/771efc8b-9397-4785-a3d7-5c23dfc057bf)
+
