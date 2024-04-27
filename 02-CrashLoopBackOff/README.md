@@ -16,6 +16,12 @@ Misconfigurations can encompass a wide range of issues, from incorrect environme
 
 ### Errors in the Liveness Probes
 
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/2ed445b7-c984-480c-908c-348eb4b127c1)
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/0a5eeb3c-1039-4ad2-b858-7f6ad442755c)
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/ced96630-7bde-4272-a687-81b539eb8fa3)
+- Here Liveness is failing be'coz we don't have that endpoint or health check present.
+## NOTE : Liveness probe will be check for pod's health, and Readiness probe will check for the pod is ready to take traffic or not.
+
 Liveness probes in Kubernetes are used to check the health of a container. If a liveness probe is incorrectly configured, it might falsely report that the container is unhealthy, causing Kubernetes to kill and restart the container repeatedly. For example, if the liveness probe checks a URL or port that the application does not expose or checks too soon before the application is ready, the container will be repeatedly terminated and restarted.
 
 ### The Memory Limits Are Too Low
