@@ -24,6 +24,15 @@ If the memory limits set for a container are too low, the application might exce
 
 ### Wrong Command Line Arguments
 
+- Let's say for example we have an python based application, and we wrote dockerfile for it, In the file dockerfile we by mistake or typo in the CMD instead of app.py we wrote app1.py
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/bf53b263-1188-43b9-a1bc-09058ba8d551)
+- Deployment apply -- Api server -- Node -- Kubectl will create container -- If no issues running state or if issues found Error state -- Then Crashed -- Kubernetes by default have restart policy it will restart the container again and this will be repated like backoff loop.
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/20aa7e51-de9b-419c-91a0-74b55e2fa911)
+- Here we are see that Container is created -- Then went to Error state -- then Crashloop -- Again restart and -- same goes on.
+- Now we have fixed the issue CMD where app name is different. After correction deployment is running
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/15909b36-5ae8-4d6d-9718-f41e88d7c4ae)
+
+
 Containers might be configured to start with specific command-line arguments. If these arguments are wrong or lead to the application exiting (for example, passing an invalid option to a command), the container will exit immediately. Kubernetes will then attempt to restart it, leading to the CrashLoopBackOff status. An example would be passing a configuration file path that does not exist or is inaccessible.
 
 ### Bugs & Exceptions
