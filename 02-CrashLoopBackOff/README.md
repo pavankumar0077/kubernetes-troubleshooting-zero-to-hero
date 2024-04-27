@@ -1,5 +1,7 @@
 # CrashLoopBackOff
 
+![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/a0961c84-6ae3-47c4-b052-f091e8f9fdeb)
+
 When you see "CrashLoopBackOff," it means that kubelet is trying to run the container, but it keeps failing and crashing. After crashing, Kubernetes tries to restart the container automatically, but if the container keeps failing repeatedly, you end up in a loop of crashes and restarts, thus the term "CrashLoopBackOff." 
 
 This situation indicates that something is wrong with the application or the configuration that needs to be fixed.
