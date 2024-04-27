@@ -36,6 +36,14 @@ K8s Cluster
 - Then Second Namespace and rest NS the pods in these NS will fail be'coz of not CPU and RAM.
 - We can limit the resouces on the NAMESPACE level - RESOURCE QUOTE
 - We can limit the resouces on the Pod level as well - LIMIT RESOURCE
+- Here it is CPU - 1000m and Memory - 1000Mi, Here CPU AND RAM ARE 1GB.
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/4391cc37-f925-4d76-a5a3-7e3b8c3673d6)
+- This error is be'coz either RESOUCES ARE NOT ENOUGHT OR THE POD IS TAKING MORE RESOUCES THAN WHAT ACTUALLY IT SHOULD TAKE. IN ANY OF THESE CASES WE NEED TO ASK DEV's wHAT IS THE ISSUE WITHT THIS.
+- As a DEVOPS ENGINEER we need to give the dev's like application logs pod logs and THREAD DUMP to dev so that they will analysis it and fix the resouces issue.
+
+
+NOTE : DON'T INCREASE THE CPU OR MEMORY. IT IS NOT THE SOLUTION AND A VERY BAD PRACTICE. DEVs SHOULD IDENTIFY THE ROOT CAUSE ON WHY THE POD IS TAKING MORE RESOUCES THAN EXPECTED.
+--
   
 If the memory limits set for a container are too low, the application might exceed this limit, especially under load, leading to the container being killed by Kubernetes. This can happen repeatedly if the workload does not decrease, causing a cycle of crashing and restarting. Kubernetes uses these limits to ensure that containers do not consume all available resources on a node, which can affect other containers.
   
