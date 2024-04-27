@@ -25,9 +25,20 @@ Misconfigurations can encompass a wide range of issues, from incorrect environme
 Liveness probes in Kubernetes are used to check the health of a container. If a liveness probe is incorrectly configured, it might falsely report that the container is unhealthy, causing Kubernetes to kill and restart the container repeatedly. For example, if the liveness probe checks a URL or port that the application does not expose or checks too soon before the application is ready, the container will be repeatedly terminated and restarted.
 
 ### The Memory Limits Are Too Low
-
+K8s Cluster
+==
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/ac336c61-75ad-4186-b083-b1f32d5b1595)
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/7cfc44f0-c660-4ecb-b145-7e5400af89f6)
+- This is how kuberntes clusters is shared by different teams and apps in real time.
+- In a cluster we have 3 nodes all together we have 60 CPUs and 64 GB ram, And 5 Namespaces
+- We have 5 pods running and we didn't mention any cpu limit or limitations to consume for the pod.
+- If First Namespace is taking 60 CPU and 64 gb of ram, As we are not mentioning the limitations,
+- Then Second Namespace and rest NS the pods in these NS will fail be'coz of not CPU and RAM.
+- We can limit the resouces on the NAMESPACE level - RESOURCE QUOTE
+- We can limit the resouces on the Pod level as well - LIMIT RESOURCE
+  
 If the memory limits set for a container are too low, the application might exceed this limit, especially under load, leading to the container being killed by Kubernetes. This can happen repeatedly if the workload does not decrease, causing a cycle of crashing and restarting. Kubernetes uses these limits to ensure that containers do not consume all available resources on a node, which can affect other containers.
-
+  
 ### Wrong Command Line Arguments
 
 - Let's say for example we have an python based application, and we wrote dockerfile for it, In the file dockerfile we by mistake or typo in the CMD instead of app.py we wrote app1.py
