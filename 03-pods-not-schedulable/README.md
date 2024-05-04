@@ -2,8 +2,49 @@ In Kubernetes, the scheduler is responsible for assigning pods to nodes in the c
 
 1. Node Selector
 
-Node Selector is a simple way to constrain pods to nodes with specific labels. It allows you to specify a set of key-value pairs that must match the node's labels for a pod to be scheduled on that node.
-Usage: Include a nodeSelector field in the pod's YAML definition to specify the required labels.
+- It is a field in a Kubernetes pod and this field will help the nodes or tell the kube scheduler like schedule the pod
+only on the particular node.
+- We identify that particular node within the deployment.yaml file we will provide a certain labell.
+- IF there is any node with that particular label only then  schedule the pod on that particular node.
+- IF there is noo node then keep my pod in the non schedulable status 
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/d3805fa6-68c4-490f-96b2-8f7c9c923da7)
+- In some cases we have this type of requirement like this pod shoudl run on this particualar node like some applications should run on ARM process so we need ARM node running there to run this particular pod or deployment.
+- IF we have applied the deployment AND PODS ARE IN NOT IN PENDING STATE THAT MEANS NODE SELECTOR THAT WE HAVE MENTIONEEDD IN THE DEPLOYMENT.YAML FILE IS WRONG.
+- How to find the fix THE ERROR IS 1ST WE NEED TO CHECK FOR THE PENDING STATE OF PODS AND WE NEED TO DESRIBE THAT POD TO FIND THE ERROR
+```
+root@pavan-virtualbox:/home/pavan/K8S# kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-867798947d-6zg49   0/1     Pending   0          53s
+nginx-deployment-867798947d-74rq9   0/1     Pending   0          53s
+```
+```
+kubectl describe pod nginx-deployment-867798947d-6zg49
+```
+```
+ERROR :
+
+Events:
+  Type     Reason            Age   From               Message
+  ----     ------            ----  ----               -------
+  Warning  FailedScheduling  81s   default-scheduler  0/3 nodes are available: 1 node(s) had untolerated taint {node-role.kubernetes.io/control-plane: }, 2 node(s) didn't match Pod's node affinity/selector. preemption: 0/3 nodes are available: 3 Preemption is not helpful for scheduling.
+```
+### HOW TO FIX THIS ERRO
+- We need to set the correct name in the node-selector in yaml file and in tthe NODE AS WELL.
+- 1ST WE NEED TO EDIT THE NODE AND SET FOR ARM NODE
+- ``` kkubectl edit node pavan-multi-worker ```
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/422ef08a-68fa-4cae-8d90-f6ce8094e87d)
+- Here we need to node-name in the label secction.
+- THis can be done by using kubectl edit orr
+- ``` kubectl lable node ```
+- Name should match with the deployment.yaml file
+- Now pods are in running state
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/b7904311-d42d-4bc5-8026-8f5b20bb33de)
+
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/91e5444b-fd35-48c4-a64c-edbff8bbf40c)
+
+
+**Node Selector is a simple way to constrain pods to nodes with specific labels. It allows you to specify a set of key-value pairs that must match the node's labels for a pod to be scheduled on that node.
+Usage: Include a nodeSelector field in the pod's YAML definition to specify the required labels.**
 
 ```
 spec:
