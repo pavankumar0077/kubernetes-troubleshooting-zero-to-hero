@@ -57,8 +57,15 @@ spec:
 
 2. Node Affinity
 
-Node Affinity is a more expressive way to specify rules about the placement of pods relative to nodes' labels. It allows you to specify rules that apply only if certain conditions are met.
-Usage: Define nodeAffinity rules in the pod's YAML definition, specifying required and preferred node selectors.
+![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/71f69465-dea3-446f-b901-38306ed407ad)
+
+- Node Selector - WIth NOde selector we are forcing the scheduler that schedule the pod only if you find the right node, It's a Hard match. IN the above example if you don't find a arm-processer node.
+- NOde Affinity - It is a feature It has 2 OPTIONS 1. PREFERRED 2.REQUIRED.
+- REQUIRED - Works almost similar to the node selector where you are telling the scheduler that only schedule if i find the 100% exact match or exact required node, Where as
+- PREFERRED - Scheduling option what we are telliing the scheduler is that is first try to find exact same node where i will provide you the lable if you find the lable just use that particular node if you don't find them I am okay you can schedule it anywhere, THis is difference between AFFINITTY AND SELECTOR.
+
+**Node Affinity is a more expressive way to specify rules about the placement of pods relative to nodes' labels. It allows you to specify rules that apply only if certain conditions are met.
+Usage: Define nodeAffinity rules in the pod's YAML definition, specifying required and preferred node selectors.**
 
 ```
 spec:
