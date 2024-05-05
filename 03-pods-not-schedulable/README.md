@@ -201,8 +201,20 @@ root@pavan-virtualbox:/home/pavan/K8S#\
 - 
 3. Taints
 
-Taints are applied to nodes to repel certain pods. They allow nodes to refuse pods unless the pods have a matching toleration.
-Usage: Use kubectl taint command to apply taints to nodes. Include tolerations field in the pod's YAML definition to tolerate specific taints.
+- WE HAVE A KUBERNETES NODE, WE DON'T WANT TO SCHEDULE ANYTHING ON THIS NODE
+- ANY POD SHOULD NOT TO SCHEDULED ON THIS PARTICULAR NODE.
+- HERE EXACTLY THIS SITUATION COMES IS WHEN WE WANT TO UPGRADE
+- LET'S SAY FOR EXAMPLE WE HAVE A PROD KUBERNETES CLUSTER AND WE WANT TO UPGRADE IT TO NEW VERSION LET'S SAY 1.29
+- SINCE THIS IS PRODUCTION KUBERNETES CLUSTER WE CAN NOT UPGRADE ALL THE NODES AT A TIME
+- WE WILL DRAIN A PARTIICULAR NODE WHERE WE WILL MOVE ALL THE PODS THAT ARE THERE IN THAT PARTICULAR NODE TO A  DIFFERENT NODE, ONCE THEY MOVE TO DIFFERENT NODE THEN WE WILL MAKE THE NODE UNSCHEDULED.
+- ONCE IT IS UNSCHEDULED - THIS NODE WILL BE IDLE KUBE SCHEDULER WILL NOT GOING TO SCHEDULE ANYTHING ON THIS PARTICULAR NODE
+- SO WE CAN BRING THIS NODE DOWN AND WE CAN UPGRADE IT, AND WE REMOVE THE UNSCHEDULABLE STATUS AND THE NEW VERSION WILL BE UP AND RUNNING
+- THERE ARE MULTIPLE WAYS TO UPGRADE KUBERENETES CLUSER THIS IS THE ONE WAY
+- FOR THIS WE USE A CONECPT CALLED TAINT
+- WE CAN THINK TAINT AS A LABEL - WHICH EXPLAIN TO THE KUBE SCHEDULER THAT MY NODE HAS BEEN UNSTABLE 
+
+**Taints are applied to nodes to repel certain pods. They allow nodes to refuse pods unless the pods have a matching toleration.
+Usage: Use kubectl taint command to apply taints to nodes. Include tolerations field in the pod's YAML definition to tolerate specific taints.**
 
 ```
 kubectl taint nodes node1 disktype=ssd:NoSchedule
