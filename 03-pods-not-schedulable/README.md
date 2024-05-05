@@ -213,8 +213,54 @@ root@pavan-virtualbox:/home/pavan/K8S#\
 - FOR THIS WE USE A CONECPT CALLED TAINT
 - WE CAN THINK TAINT AS A LABEL - WHICH EXPLAIN TO THE KUBE SCHEDULER THAT MY NODE HAS BEEN UNSTABLE 
 
+![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/170704f0-343c-4f7a-8f46-bf0b885e5d67)
+
+
 **Taints are applied to nodes to repel certain pods. They allow nodes to refuse pods unless the pods have a matching toleration.
 Usage: Use kubectl taint command to apply taints to nodes. Include tolerations field in the pod's YAML definition to tolerate specific taints.**
+
+REF DOC LINK : ``` https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/ ```
+
+- HOW TO APPLY TAINT
+```
+oot@pavan-virtualbox:/home/pavan/K8S# kubectl get nodes
+NAME                        STATUS   ROLES           AGE   VERSION
+pavan-multi-control-plane   Ready    control-plane   21h   v1.29.2
+pavan-multi-worker          Ready    <none>          21h   v1.29.2
+pavan-multi-worker2         Ready    <none>          21h   v1.29.2
+root@pavan-virtualbox:/home/pavan/K8S# kubectl taint nodes pavan-multi-worker key1=value1:NoSchedule
+node/pavan-multi-worker tainted
+root@pavan-virtualbox:/home/pavan/K8S# kubectl edit node pavan-multi-control-plane
+Edit cancelled, no changes made.
+root@pavan-virtualbox:/home/pavan/K8S#
+```
+
+- HERE WE HAVE MADE pavan-multi-worker as TAINT
+- NOW IF WE DEPLOY ANY MANIFEST IT WILL GO TO pavan-multi-workder2 only, BECAUSE CONTROL-PLANE ALREADY BY DEFAULT HAS TAINT - NO SCHDULE, AND WE MADE pavan-multi-worker also same TAINT - no schdule.
+
+```
+root@pavan-virtualbox:/home/pavan/K8S# kubectl apply -f node-selector.yml 
+deployment.apps/nginx-deployment created
+root@pavan-virtualbox:/home/pavan/K8S# kubectl get pods -o wide
+NAME                                READY   STATUS    RESTARTS   AGE   IP           NODE                  NOMINATED NODE   READINESS GATES
+nginx-deployment-86dcfdf4c6-r7nbd   1/1     Running   0          7s    10.244.1.3   pavan-multi-worker2   <none>           <none>
+nginx-deployment-86dcfdf4c6-vcc9r   1/1     Running   0          7s    10.244.1.4   pavan-multi-worker2   <none>           <none>
+```
+
+- BY DEFAULT WE CONTROL-PLANE HAS TAINT AS effect: NoSchedule
+
+```
+spec:
+  podCIDR: 10.244.0.0/24
+  podCIDRs:
+  - 10.244.0.0/24
+  providerID: kind://docker/pavan-multi/pavan-multi-control-plane
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/control-plane
+```
+
+
 
 ```
 kubectl taint nodes node1 disktype=ssd:NoSchedule
@@ -234,9 +280,31 @@ spec:
 
 4. Tolerations
 
-Tolerations are applied to pods and allow them to schedule onto nodes with matching taints. They override the effect of taints.
+- EXCEPTIONS - FOR EXAMPLE WE HAVE 3 NODES IN THE NO SCHDULE STATUS (TAINTED 3 NODES)
+- FOR SOME REASON CERTAIN HIGH PRIORITY PODS WHICH ARE PERFORMANCE CRITICAL OR PRODUCTION CRITICAL THEY SHOULD DEFINITY RUN
+- FOR THIS PODS WE CAN ADD TOLERATION - AN EXCEPTION WITH WHICH THEY CAN RUN EVEN IN THE NO SCHEDULE STATE OR ANY TAINTED STATE   
 
-Usage: Include tolerations field in the pod's YAML definition to specify which taints the pod tolerates.
+**Tolerations are applied to pods and allow them to schedule onto nodes with matching taints. They override the effect of taints.
+
+Usage: Include tolerations field in the pod's YAML definition to specify which taints the pod tolerates.**
+
+- KEY AND VALUE CAN BE ANYTHING AS PER THE ORGANIZATION
+
+```
+spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+      tolerations:
+      - key: "REQ"
+      operator: "Equal"
+      value: "HIGH-AVAILABLE"
+      effect: "NoSchedule"
+```
+
+
 
 ```
 spec:
