@@ -67,6 +67,8 @@ spec:
 **Node Affinity is a more expressive way to specify rules about the placement of pods relative to nodes' labels. It allows you to specify rules that apply only if certain conditions are met.
 Usage: Define nodeAffinity rules in the pod's YAML definition, specifying required and preferred node selectors.**
 
+
+
 ```
 spec:
     containers:
@@ -83,6 +85,120 @@ spec:
             - ssd
 ```
 
+- SO HERE WE HAVE USED 03-pods-not-schedulable/03-node-affinity-preferred.yaml MANIFEST FILE.
+```
+spec:
+      affinity:
+       nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+           matchExpressions:
+           - key: arch
+             operator: In
+             values:
+             - windows
+```
+- WE KNOW THAT WE DONT HAVE ANY NODE WITH THIS NAME
+- AS WE ARE USING PERFERRED SCHEDULER,  1ST IT WILL CHECK FOR NODE WITH ARCH IT IS NOT AVAILABLE THEN IT WILL SCHEDULE ON ANY AVAILABLE NODE.
+```
+root@pavan-virtualbox:/home/pavan/K8S# kubectl get pods 
+NAME                                READY   STATUS              RESTARTS   AGE
+nginx-deployment-797b57bbdb-955bt   0/1     ContainerCreating   0          18s
+nginx-deployment-797b57bbdb-klqrg   0/1     ContainerCreating   0          18s
+nginx-deployment-797b57bbdb-tmw7l   0/1     ContainerCreating   0          18s
+root@pavan-virtualbox:/home/pavan/K8S# kubectl get pods -o wide
+NAME                                READY   STATUS              RESTARTS   AGE   IP           NODE                  NOMINATED NODE   READINESS GATES
+nginx-deployment-797b57bbdb-955bt   1/1     Running             0          34s   10.244.2.3   pavan-multi-worker    <none>           <none>
+nginx-deployment-797b57bbdb-klqrg   1/1     Running             0          34s   10.244.2.2   pavan-multi-worker    <none>           <none>
+nginx-deployment-797b57bbdb-tmw7l   0/1     ContainerCreating   0          34s   <none>       pavan-multi-worker2   <none>           <none>
+root@pavan-virtualbox:/home/pavan/K8S# kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-797b57bbdb-955bt   1/1     Running   0          39s
+nginx-deployment-797b57bbdb-klqrg   1/1     Running   0          39s
+nginx-deployment-797b57bbdb-tmw7l   1/1     Running   0          39s
+root@pavan-virtualbox:/home/pavan/K8S# kubectl get nodes
+NAME                        STATUS   ROLES           AGE   VERSION
+pavan-multi-control-plane   Ready    control-plane   15h   v1.29.2
+pavan-multi-worker          Ready    <none>          15h   v1.29.2
+pavan-multi-worker2         Ready    <none>          15h   v1.29.2
+root@pavan-virtualbox:/home/pavan/K8S#
+```
+- Here we can see that scheular scheduled in the node pavan-multi-worker and pavan-multi-workder2.
+
+### NOTE : USUALLY I USE NANO EDITOR INSTEAD OF VIM
+
+```
+1. Open a terminal window.
+
+2. Type the following command and press Enter:
+   ```
+   export EDITOR=nano
+   ```
+
+3. This command sets the `EDITOR` environment variable to nano for the current session. To make this change permanent, add this line to your shell configuration file (like `~/.bashrc` or `~/.bash_profile`). You can do this by opening the file in a text editor and adding the line `export EDITOR=nano` to the end of it.
+
+4. Now, when you run `kubectl edit nice pavan-multi-worker`, it will open the resource in nano instead of vim.
+
+5. To verify that nano is being used as the default editor, you can run `echo $EDITOR` in the terminal. It should output `nano`.
+
+With these steps, you've successfully configured kubectl to use nano as the default editor.
+```
+- NOW WE ARE PROVIDING THE SAME NAME AS WORKER-NODE HAS by editing this node ``` kubectl edit node pavan-multi-worker ```
+```
+labels:
+    beta.kubernetes.io/arch: amd64
+    beta.kubernetes.io/os: linux
+    kubernetes.io/arch: amd64
+    kubernetes.io/hostname: pavan-multi-worker
+    kubernetes.io/os: linux
+    node-name : arm-worker
+  name: pavan-multi-worker
+  resourceVersion: "31273"
+  uid: 5e29b1ff-dc40-415c-996a-f0e1950703ae
+```
+- IN THE DEPLOYMENT YAML FILE THE NODE AFFINITY IS
+```
+spec:
+      affinity:
+       nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+           matchExpressions:
+           - key: node-name
+             operator: In
+             values:
+             - arm-worker
+```
+- NOW IF WE APPLY IT WILL USE THE SAME NODE, BUT PERVIOUSLY WE DON'T HAVE EXACT MATCH OF THE NODE SO IT WAS SCHEDULED ON ANY AVAILABLE NODE.
+```
+root@pavan-virtualbox:/home/pavan/K8S# kubectl apply -f deployment-preferred-sched.yaml 
+deployment.apps/nginx-deployment created
+root@pavan-virtualbox:/home/pavan/K8S# kubectl get pods -o wide
+NAME                                READY   STATUS    RESTARTS   AGE   IP           NODE                 NOMINATED NODE   READINESS GATES
+nginx-deployment-76d94ccc75-qbvjv   1/1     Running   0          9s    10.244.2.5   pavan-multi-worker   <none>           <none>
+nginx-deployment-76d94ccc75-t6dd7   1/1     Running   0          9s    10.244.2.4   pavan-multi-worker   <none>           <none>
+nginx-deployment-76d94ccc75-x6b55   1/1     Running   0          9s    10.244.2.6   pavan-multi-worker   <none>           <none>
+root@pavan-virtualbox:/home/pavan/K8S#\
+```
+
+- REQUIRED WORKS SAME AS NODE SELECTOR
+```
+ spec:
+      affinity:
+       nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+         nodeSelectorTerms:
+         - matchExpressions:
+           - key: node-name
+             operator: In
+             values:
+             - arm-worker
+```  
+
+
+- 
 3. Taints
 
 Taints are applied to nodes to repel certain pods. They allow nodes to refuse pods unless the pods have a matching toleration.
