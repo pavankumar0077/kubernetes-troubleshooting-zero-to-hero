@@ -8,6 +8,9 @@
 - ``` kind create clusterr --name=pavan ```
 - ``` kind get clusters ````
 
+### TO get cluster
+- ``` kind get clusters ```
+
 ### Create a multi node cluster
 - ``` ind create cluster --name pavan-multi --config=multi-node-cluster.yaml ```
 
