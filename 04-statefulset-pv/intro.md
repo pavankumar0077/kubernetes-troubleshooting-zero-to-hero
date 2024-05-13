@@ -5,6 +5,23 @@
 ## TO GET STATEFULSET
 ``` kubectl get statefulset ```
 
+## TO DELETE STATEFULSET
+```
+kubectl delete -f sample-statefulset.yaml
+statefulset.apps "web" deleted
+root@pavan:/home/pavan/Pavan-Learnings#
+```
+
+## TO GET THE STORAGECLASS
+``` kubectl get storageclass ```
+
+## TO GET THE PVC
+``` kubectl get pvc ```
+
+## TO DELETE THE PVC
+``` Kubect delete pvc <pvc-name> ```
+
+
 ## ISSUE
 ```
 root@pavan:/home/pavan/Pavan-Learnings# kubectl apply -f sample-statefulset.yaml
@@ -66,7 +83,38 @@ root@pavan:/home/pavan/Pavan-Learnings#
 ```
 - ``` kubectl get storageclass ``` will show the STORAGE CLASS IN KUBERNETES CLUSTERS
 - THIS WILL BE DEIFFENET IN DIFFERENT CLOUDS LIKE AWS, AKS, GCP K8S, AND LOCAL
-- AS OF NOW WE ARE USING LOCAL STORAGE WHICH IS KIND KUBERNETES CLUSTER.
-- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/6a80ca6b-c952-4572-84c1-6e894064cf06)
-- The above one is the KIND LIFECYCLE THAT IS ``` local-path-storage ``` is the KIND STORAGE PROVISIONER.
-- 
+- AS OF NOW WE ARE USING STANDARD WHICH IS KIND KUBERNETES CLUSTER.
+
+## NOTE - WE HAVE TO DELTE PERSISTENT VOLUME CLAIM AND PERSISTENT VOLUME EXPICILTY DELETED.
+``` kubectl delete -f sample-statefulset.yaml ```
+``` kubectl delete pvc <pvc-name> ```
+
+```
+root@pavan:/home/pavan/Pavan-Learnings# kubectl apply -f sample-statefulset.yaml
+statefulset.apps/web configured
+root@pavan:/home/pavan/Pavan-Learnings# kubectl get pods -w
+NAME    READY   STATUS    RESTARTS   AGE
+web-0   1/1     Running   0          4m59s
+web-1   1/1     Running   0          69s
+web-2   1/1     Running   0          48s
+```
+- NOW ALL THE 3 PODS ARE RUNNING.
+
+## WHY STATEFULSET ARE DIFFENET FROM DEPLOYMENTS.
+- LET'S ASSUME THAT YOU ARE DEALING WITH THE DATABASES, YOU HAVE A PRIMARY DAGTABASE WHEN YOU HAVE THREE COPIES
+-  ONE DB WILL YOUR PRIMARY DATABASE, WHICH IS READING AND WRITING THE OTHER 2 ARE LIKE BACKUP OR PRIMARY IS ACTIVE DATABASE AND OTHER 2 ARE PASSIVE DATABASE.
+-  WHERE OTHER 2 ARE JUST READING AND 1ST IS READING AND WRITING
+-  WHAT IS THE POINT OF STARTING OTHER 2 PASSIVE DB's WITHOUT THE PIRMARY DB ACITVE DB,
+-  THIS IS JUST AN EXAMPLE.
+
+## WHAT IF WE WANT TO USE EXTERNAL SOTRAGE OTHER THAN EBS IN AWS.
+- WE CAN USE CSI DRIVER TO USE EXTERNAL STORAGE.
+- THERE ARE SOME DEFAULT STORAGE PROVISIONER - SO THE CODE FOR THIS PROVISIONERS - LIKE EKS -- IT ALREADY HAS PROVISIONERS LIKE EBS, EFS ( AWS )
+- WHAT IF WE WANT TO USE NETAPP STORAGE SERVICE WHICH IS NOT NATIVE TO EKS
+- SO THE NETAPP STORAGE SERVICE WILL PROVIDE A CSI DRIVE WE HAVE TO INSTALL THAT CSI DRIVER IN THE EKS CLUSTER
+- **CSI DRIVER -- CONTAINER STORAGE INTERFACE DRIVE.**
+- THEN THAT STROAGE SERVICE WILL PROVIDISONER THE PV IN THE NETAPP OR ANY OTHER STROAGE SERVICES.
+
+## WORFKLOW WITH EXTERNAL STROAGE PROVIDER.
+- Stateful set -- PVC template -- IN the template provide the stroage class -- Storage Class - Install Storage class CSI DRIVER (Go to there docs you will get HELM CHART OR KUBERNETES OPERATORS -- THAT CSI DRIVER WILL TALK TO THE PROVISIONER -- CREATE A PV.
+
