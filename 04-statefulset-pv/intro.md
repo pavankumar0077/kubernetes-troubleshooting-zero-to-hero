@@ -53,3 +53,16 @@ volumeClaimTemplates:
           storage: 1Gi
 ```
 - HERE THE PVC MENTIONED IS EBS WHICH MEANS 
+- STROAGE CLASS -- PVC -- EBS (other storage services are EFS,  AWS FSX, SUCH AS NETAP, ONTAP )
+- HOW DOES AWS WILL UNDERSTAND WHICH SERIVES THAT SHOULD PROVIDE AS A STROAGE SERVICES.
+- IN PVC WE WEILL MENTION storageClassName: ebs, When EBS mentioned in the AWS THERE WILL A EBS PROVISIONER -- THIS PROVISIONER ACTUALLY CEREATES A PERSISTENT PV WHICH WILL BE USED BY STATEFULSET.
+```
+root@pavan:/home/pavan/Pavan-Learnings# kubectl get storageclass
+NAME                 PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+standard (default)   rancher.io/local-path   Delete          WaitForFirstConsumer   false                  3h9m
+root@pavan:/home/pavan/Pavan-Learnings#
+```
+- ``` kubectl get storageclass ``` will show the STORAGE CLASS IN KUBERNETES CLUSTERS
+- THIS WILL BE DEIFFENET IN DIFFERENT CLOUDS LIKE AWS, AKS, GCP K8S, AND LOCAL
+- AS OF NOW WE ARE USING LOCAL STORAGE WHICH IS KIND KUBERNETES CLUSTER.
+- 
