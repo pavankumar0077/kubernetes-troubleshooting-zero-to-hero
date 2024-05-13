@@ -52,6 +52,8 @@ volumeClaimTemplates:
         requests:
           storage: 1Gi
 ```
+![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/5be1a839-86e5-4d39-a344-c39a757c6016)
+
 - HERE THE PVC MENTIONED IS EBS WHICH MEANS 
 - STROAGE CLASS -- PVC -- EBS (other storage services are EFS,  AWS FSX, SUCH AS NETAP, ONTAP )
 - HOW DOES AWS WILL UNDERSTAND WHICH SERIVES THAT SHOULD PROVIDE AS A STROAGE SERVICES.
