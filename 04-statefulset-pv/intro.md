@@ -67,4 +67,6 @@ root@pavan:/home/pavan/Pavan-Learnings#
 - ``` kubectl get storageclass ``` will show the STORAGE CLASS IN KUBERNETES CLUSTERS
 - THIS WILL BE DEIFFENET IN DIFFERENT CLOUDS LIKE AWS, AKS, GCP K8S, AND LOCAL
 - AS OF NOW WE ARE USING LOCAL STORAGE WHICH IS KIND KUBERNETES CLUSTER.
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/6a80ca6b-c952-4572-84c1-6e894064cf06)
+- The above one is the KIND LIFECYCLE THAT IS ``` local-path-storage ``` is the KIND STORAGE PROVISIONER.
 - 
