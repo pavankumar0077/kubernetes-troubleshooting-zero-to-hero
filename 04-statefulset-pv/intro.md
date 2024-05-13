@@ -116,5 +116,8 @@ web-2   1/1     Running   0          48s
 - THEN THAT STROAGE SERVICE WILL PROVIDISONER THE PV IN THE NETAPP OR ANY OTHER STROAGE SERVICES.
 
 ## WORFKLOW WITH EXTERNAL STROAGE PROVIDER.
+
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/7216d58f-7076-48dd-88ae-6ee29cc9efe6)
+
 - Stateful set -- PVC template -- IN the template provide the stroage class -- Storage Class - Install Storage class CSI DRIVER (Go to there docs you will get HELM CHART OR KUBERNETES OPERATORS -- THAT CSI DRIVER WILL TALK TO THE PROVISIONER -- CREATE A PV.
 
