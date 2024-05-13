@@ -42,5 +42,14 @@ Warning  FailedScheduling  2m24s  default-scheduler  0/1 nodes are available: po
 - WHEN THE DEVELOPER HAS CREATED STATEFULSET ON THE AWS EKS PLATFORM
 - DEVELOPER HAS MENTIONED THE STROAGE CLASS AS EBS IN THE YAML FILE
 ```
-
+volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: ebs
+      resources:
+        requests:
+          storage: 1Gi
 ```
+- HERE THE PVC MENTIONED IS EBS WHICH MEANS 
