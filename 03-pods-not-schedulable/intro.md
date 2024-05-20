@@ -12,7 +12,7 @@
 - ``` kind get clusters ```
 
 ### Create a multi node cluster
-- ``` ind create cluster --name pavan-multi --config=multi-node-cluster.yaml ```
+- ``` kind create cluster --name pavan-multi --config=multi-node-cluster.yaml ```
 
 ```
 kind: Cluster
