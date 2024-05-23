@@ -34,3 +34,23 @@
 ### TO CREATE A NAMESPACE
 ``` kubectl create ns secure-namespace ```
 
+### TO DEPLOY ON A PARTICULAR NAMESPACE
+``` kubectl apply -f db.yaml -n secure-namespace ```
+- Here secure-namespace is name of the namespace.
+
+### TO EXEC INTO RUNNING POD
+```  kubectl -n secure-namespace exec -it redis-5496dd9bcb-8wxhs -- /bin/bash ```
+
+### TO CONNECT TO DATABASE
+``` redis-cli ```
+FOR OTHER DB's
+- WE USE mysql-cli for mysql
+- mongo cli client for mongo db
+
+### ANOTHER WAY TO GO INTO THE RUNNING POD
+``` kubectl exec -it deploy/nginx-deployment -- /bin/bash ```
+
+### INSTALL REDIS-CLI IN THE RUNNING POD BY EXEC INTO THE CONTAINER
+``` https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-linux/ ```
+- FIRST DO apt-get update then follow the docs.
+
