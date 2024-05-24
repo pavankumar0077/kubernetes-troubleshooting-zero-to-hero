@@ -2,7 +2,7 @@
 
 ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/33c1fb2c-d163-4a20-a8e8-001d3e194401)
 
-
+## REF LINK -- ``` https://kubernetes.io/docs/concepts/services-networking/network-policies/ ```
 ## PROBLEM STATEMENT
 
 - WE HAVE A KUBERNETES CLUSTER, IN THAT WE HAVE 2 NAMESPACES,
@@ -53,4 +53,14 @@ FOR OTHER DB's
 ### INSTALL REDIS-CLI IN THE RUNNING POD BY EXEC INTO THE CONTAINER
 ``` https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-linux/ ```
 - FIRST DO apt-get update then follow the docs.
+
+### TRY ACCESSING THE POD WHICH IS IN DEFAULT OR OTHER NAMESPACE TO THE POD PRESENT IN THE SECURE-NAMESPACE
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/605643e8-e0f6-46dc-b450-cb50a7926f89)
+- Here we have created a matchLabels -- in that app: redis, which is redis app name
+- match labels
+- ![image](https://github.com/pavankumar0077/kubernetes-troubleshooting-zero-to-hero/assets/40380941/0e943a22-af64-4f91-b3d3-7484a05bac3f)
+- ``` kubectl apply -f network-policy -n secure-namespace ```
+- and match the lables
+- WE CAN BLOCK BY MATCHLABLES, IP ADDRESS.
+
 
